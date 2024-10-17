@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OnDuplicateKeyMapper">
+    <!-- 批量插入或者更新 -->
+    <insert id="saveOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into hh_chain_customer_info(id,description, create_time, update_time, service_id, name, code, req_mode,
+        req_api, sign_policy)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id},#{entity.description}, #{entity.createTime}, #{entity.updateTime}, #{entity.serviceId},
+            #{entity.name},
+            #{entity.code}, #{entity.reqMode}, #{entity.reqApi}, #{entity.signPolicy})
+        </foreach>
+        on duplicate key update
+        description = values(description),
+        create_time = values(create_time),
+        update_time = values(update_time),
+        service_id = values(service_id),
+        name = values(name),
+        code = values(code),
+        req_mode = values(req_mode),
+        req_api = values(req_api),
+        sign_policy = values(sign_policy)
+    </insert>
+
+
+</mapper>
