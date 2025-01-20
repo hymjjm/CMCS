@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.JjmClusterUploadMapper">
+    <sql id="tableName">jjm_cluster_upload</sql>
+    <sql id="tempTableName">temp_table</sql>
+
+<!--    &lt;!&ndash;    去掉多余的空值&ndash;&gt;-->
+<!--    <update id="deleteTempTable">-->
+<!--        DELETE FROM jjm_cluster_upload-->
+<!--        WHERE GENOME_START = 0-->
+<!--    </update>-->
+
+
+    <!--    创建临时表格，去除重复项-->
+    <update id="createTempTable">
+        CREATE TABLE temp_table AS
+        SELECT DISTINCT *
+        FROM jjm_cluster_upload
+    </update>
+
+
+    <!--     删除原表格中的所有数据-->
+    <update id="truncateOriginalTable">
+        TRUNCATE TABLE jjm_cluster_upload
+    </update>
+
+<!--     将临时表格中的数据复制回原表格中-->
+    <update id="copyDataFromTempTable">
+        INSERT INTO jjm_cluster_upload SELECT * FROM temp_table
+    </update>
+
+<!--     删除临时表格-->
+    <update id="dropTempTable">
+        DROP TABLE temp_table
+    </update>
+
+    <!-- 批量插入或者更新 -->
+<!--    <insert id="saveOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">-->
+<!--        insert into hh_chain_customer_info(id,GENE_SYMBOL, CHROMOSOME, GENOME_START, Tumor_Sample, Cancer_Type, Reference_Genomes)-->
+<!--        values-->
+<!--        <foreach collection="entities" item="entity" separator=",">-->
+<!--            (#{entity.id},#{entity.GENE_SYMBOL}, #{entity.CHROMOSOME}, #{entity.GENOME_START}, #{entity.Tumor_Sample},-->
+<!--            #{entity.Cancer_Type}, #{entity.Reference_Genomes})-->
+<!--        </foreach>-->
+<!--        on duplicate key update-->
+<!--        GENE_SYMBOL = values(GENE_SYMBOL),-->
+<!--        CHROMOSOME = values(CHROMOSOME),-->
+<!--        GENOME_START = values(GENOME_START),-->
+<!--        Tumor_Sample = values(Tumor_Sample),-->
+<!--        Cancer_Type = values(Cancer_Type),-->
+<!--        Reference_Genomes = values(Reference_Genomes)-->
+<!--    </insert>-->
+
+
+</mapper>
