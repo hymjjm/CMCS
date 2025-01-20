@@ -122,6 +122,7 @@ app:
 
 redis:
   enabled: false # **Set this parameter to false when running locally**
+```
 
 ##Project Startup (Command Line Execution)
 
