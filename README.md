@@ -51,11 +51,11 @@ redis:
 
 ## 项目启动（终端命令行运行）
 
-###使用 Maven 进行构建并运行后端服务：
+### 使用 Maven 进行构建并运行后端服务：
 mvn clean install(第一次克隆项目或安装依赖时使用)
 mvn spring-boot:run
 
-###启动前端服务：
+### 启动前端服务：
 1. 进入前端目录
 ```bash
 cd vue
@@ -72,7 +72,7 @@ npm run dev
 *后续再启动项目只需要在终端 mvn spring-boot:run 和进入vue目录运行npm run dev 就能启动
 
 
-
+---
 
 # CMCS
 Cluster Mutation Classification System
@@ -123,10 +123,11 @@ app:
 redis:
   enabled: false # **Set this parameter to false when running locally**
 ```
+---
 
-##Project Startup (Command Line Execution)
+## Project Startup (Command Line Execution)
 
-###Backend Startup
+### Backend Startup
 Build the backend service using Maven (execute this only when the project is cloned for the first time or when dependencies are updated):
 ```bash
 mvn clean install
@@ -136,7 +137,7 @@ Run the backend service:
 mvn spring-boot:run
 ```
 
-###Frontend Startup
+### Frontend Startup
 1. Navigate to the frontend directory:
 ```bash
 cd vue
@@ -150,8 +151,9 @@ npm install
 npm run dev
 ```
 
-#Notes for Subsequent Startups
+# Notes for Subsequent Startups
 For subsequent project startups, you only need to:
+
 1.Run the backend service:
 ```bash
 mvn spring-boot:run
