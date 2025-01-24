@@ -141,7 +141,6 @@
               <p style="margin: 0;"><strong><span style="color: darkred">{{ symbol.gene }}</span></strong></p>
               <p style="margin: 5px 0 0;"><strong>Number:</strong> {{ symbol.size }}</p>
               <p style="margin: 5px 0 0;"><strong>Range:</strong> <span style="font-size: 10px">{{ symbol.range }}(bp)</span></p>
-              <p style="margin: 5px 0 0;"><strong>Context:</strong> {{ symbol.context }}</p>
               <p style="margin: 5px 0 0;"><strong>Cluster:</strong> {{ symbol.cluster }}</p>
               <!-- 其他相关信息 -->
             </div>
