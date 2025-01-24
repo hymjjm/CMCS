@@ -373,12 +373,12 @@ export default {
           showDelay: 0,
           formatter: function (params) {
             // 检查 params 的结构
-            // console.log(params);
+             //console.log("params:",params);
             const data = params.data; // 获取鼠标悬停的数据点的数据
             // 对 y 坐标的数值进行反向转换
             //  const originalY = Math.pow(10, data.value[1]);
             return `Gene: ${data.name}<br>X: ${data.value[0]}<br>Y-front: ${data.value[1]}<br>Y-behind: ${data.value[2]}<br>
-                     wtAlle:${data.value[3]}<br>mutAlle:${data.value[4]}<br>strand:${data.value[5]}  `;
+                     wtAlle:${data.value[3]}<br>mutAlle:${data.value[4]}<br>strand:${data.value[5]}<br>context:${data.value[7]}   `;
           },
 
           axisPointer: {
@@ -481,7 +481,7 @@ export default {
             // 对 x 坐标进行缩放
             // const scaledX = point.x * scaleFactor;
             data.push({
-              value: [point.x,point.y,point.y2,point.wtAlle,point.mutAlle,point.strand,point.mutDescription],
+              value: [point.x,point.y,point.y2,point.wtAlle,point.mutAlle,point.strand,point.mutDescription,point.context],
               name:point.hugo_Symbol,
               Cluster: this.clusterData[i][0].cluster, // 添加 Cluster 列并设置为空字符串
               // 为系列设置颜色

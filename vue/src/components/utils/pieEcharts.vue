@@ -118,7 +118,7 @@ export default {
 
     generatePieData() {
       // 根据 allHugoSymbols 生成饼图数据
-      // 这里只是一个示例，你需要根据实际数据结构来生成合适的饼图数据
+      // 根据实际数据结构来生成合适的饼图数据
       return this.allHugoSymbols.map(symbol => {
         return {
           value: symbol.size,
