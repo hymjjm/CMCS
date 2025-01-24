@@ -5,7 +5,7 @@
       <button class="button1" @click="xhInterface" style="margin-right: 20px;font-size: 24px">GO<i class="fas fa-chart-line"  style="margin-left: 5px;color: #FFFFFF;"></i></button>
       <button class="button1" @click="downloadCSV" style=" right: 8px;width: 200px;background-color: #ddd;font-size: 20px;border-radius: 3px; color: #333"> <i class="fas fa-download"></i> Output File3</button>
     </div>
-    <div v-show="showtable3" style="margin-top: 0px">
+    <div v-show="localShowTable3" style="margin-top: 0px">
 <!--echarts-->
       <div style="display: flex;justify-content: center;align-items: center">
         <div id="xrcluster" style="width: 700px;height: 700px;"> </div>
@@ -71,7 +71,10 @@ import * as echarts from "echarts";
 export default {
   name: "AllChrTable",
   props: {
-    eps: Number,
+    eps: {
+      type: Number,
+      default: 1000  // 默认值
+    },
     showtable3: Boolean,
     cancerType: String,
     sample: String,
@@ -81,6 +84,7 @@ export default {
   data() {
     return {
       serverIP: serverIP,
+      localShowTable3: this.showtable3,
       allHugoSymbols: [], // 用于存储所有的hugo_Symbol
       clusterData: [],
       tablename: this.cancerType + '_' + this.sample + '_' + this.referenceGenomes + ".csv",
@@ -115,6 +119,11 @@ export default {
       InterNumber:0,
     }
   },
+  watch: {
+    showtable3(newVal) {
+      this.localShowTable3 = newVal;
+    }
+  },
   computed: {
     sortedHugoSymbols() {
       return this.allHugoSymbols.slice().sort((a, b) => {
@@ -131,7 +140,7 @@ export default {
       this.$router.push({ name: 'Omics', params: { key: tag} });
     },
     async xhInterface() {
-      this.showtable3=true;
+      this.localShowTable3=true;
       this.allHugoSymbols = [];
       for (const chr of this.chrs) {
         await this.Interface(chr.value);

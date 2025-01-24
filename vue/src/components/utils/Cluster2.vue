@@ -199,7 +199,7 @@ export default {
   data(){
     return{
       serverIP:serverIP,
-      eps: 1000,
+      eps: '1000',
       myChart: null, // 添加 myChart 变量并初始化为 null
       showimg:true,
       showCluster:true,

@@ -2,10 +2,10 @@
   <div class="container" >
     <el-tabs type="border-card"  >
       <el-tab-pane label="Chromosome Data Summary" class="tab-pane">
-        <AllChrTable   style="margin-top: 10px" :showtable3="showtable3" :eps="eps"  :cancerType="cancerType" :sample="sample" :referenceGenomes="referenceGenomes" :nickname="nickname"></AllChrTable>
+        <AllChrTable   style="margin-top: 10px" :showtable3="showtable3" :eps="Number(eps)" :cancerType="cancerType" :sample="sample" :referenceGenomes="referenceGenomes" :nickname="nickname"></AllChrTable>
       </el-tab-pane>
       <el-tab-pane label="Chromosome Data Summary(Detail)" class="tab-pane">
-        <AllChrTableDetail   style="margin-top: 10px" :showtable3="showtable3" :eps="eps"  :cancerType="cancerType" :sample="sample" :referenceGenomes="referenceGenomes" :nickname="nickname"></AllChrTableDetail>
+        <AllChrTableDetail   style="margin-top: 10px" :showtable3="showtable3" :eps="Number(eps)"  :cancerType="cancerType" :sample="sample" :referenceGenomes="referenceGenomes" :nickname="nickname"></AllChrTableDetail>
       </el-tab-pane>
 
 
@@ -28,7 +28,7 @@ import AllChrTable from "../components/utils/AllChrTable";
 export default {
   name: "Cancer",
   props: {
-    eps: Number,
+    eps: String,
     showtable3: Boolean,
     cancerType: String,
     sample: String,
