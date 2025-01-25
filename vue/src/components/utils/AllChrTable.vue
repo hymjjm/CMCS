@@ -30,7 +30,6 @@
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>Cluster</strong></th>
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>CancerType</strong></th>
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>RG</strong></th>
-            <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>Context</strong></th>
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>Annotation</strong></th>
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>GeneCards</strong></th>
             <th style="padding: 10px; border: 1px solid #ddd; background-color: #f2f2f2;"><strong>To Analysis</strong></th>
@@ -47,7 +46,6 @@
             <td style="padding: 10px; border: 1px solid #ddd; background-color: rgba(255,255,255,0.8);">{{ symbol.cluster }}</td>
             <td style="padding: 10px; border: 1px solid #ddd; background-color: rgba(255,255,255,0.8);">{{cancerType}}</td>
             <td style="padding: 10px; border: 1px solid #ddd; ">{{referenceGenomes }}</td>
-            <td style="padding: 10px; border: 1px solid #ddd; ">{{symbol.context}}</td>
             <td style="padding: 10px; border: 1px solid #ddd; background-color: rgba(255,255,255,0.8);">{{symbol.mutDescription}}</td>
             <td style="padding: 10px; border: 1px solid #ddd; background-color: rgba(255,255,255,0.8);">      <el-link type="primary" :underline="false" :href="'https://www.genecards.org/cgi-bin/carddisp.pl?gene=' + symbol.gene " target="_blank">{{ symbol.gene }}</el-link>
             <td style="padding: 10px; border: 1px solid #ddd;display: flex;justify-content: center">
@@ -187,7 +185,6 @@ export default {
               range: range,
               strand: point.strand,
               mutDescription: point.mutDescription,
-              context: point.context,
               chr: chr });
           }
         });
@@ -306,11 +303,11 @@ export default {
 
 
     downloadCSV() {
-      const columnNames = ["Hugo_Symbol", "Chromosome", "MutNumber", "Range","Strand", "Cluster","CancerType","Sample","referenceGenomes","context","mutDescription"];
+      const columnNames = ["Hugo_Symbol", "Chromosome", "MutNumber", "Range","Strand", "Cluster","CancerType","Sample","referenceGenomes","mutDescription"];
       let csvContent = columnNames.join(",") + "\n";
 
       this.allHugoSymbols.forEach(symbol => {
-        csvContent += `${symbol.gene},${symbol.chr},${symbol.size},${symbol.range},${symbol.strand},${symbol.cluster},${this.cancerType},${this.sample},${this.referenceGenomes},${symbol.context},${this.mutDescription}\n`;
+        csvContent += `${symbol.gene},${symbol.chr},${symbol.size},${symbol.range},${symbol.strand},${symbol.cluster},${this.cancerType},${this.sample},${this.referenceGenomes},${this.mutDescription}\n`;
       });
 
       const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);

@@ -51,7 +51,7 @@
            <span style="color: black;">
              <b>CANCER：</b>
            </span>
-           <el-autocomplete class="inline-input" v-model="cancerType" :fetch-suggestions="querySearchCancer" placeholder="请输入内容" :trigger-on-focus="false" style="margin-right: 10px; width: 150px"></el-autocomplete>
+           <el-autocomplete class="inline-input" v-model="cancerType" :fetch-suggestions="querySearchCancer" placeholder="请输入内容" :trigger-on-focus="false" style="margin-right: 10px; width: 170px"></el-autocomplete>
            <span style="color: black;">
              <b>SAMPLE：</b>
            </span>
@@ -60,19 +60,20 @@
          </div>
          <div style="margin-top: 10px">
          <span style="color: black;">
-           <b>ReferenceGenomes：</b>
+           <b>Genome：</b>
          </span>
          <el-autocomplete class="inline-input" v-model="referenceGenomes" :fetch-suggestions="querySearchRG" placeholder="请输入内容" :trigger-on-focus="false" style="width: 90px;margin-right: 30px"></el-autocomplete>
            <span style="color: black;">
-            <el-tooltip class="item" effect="dark" content="IMD Threshold" placement="top">
-              <b style="cursor: pointer;">eps：</b>
-            </el-tooltip>
+<!--            <el-tooltip class="item" effect="dark" content="IMD Threshold" placement="top">-->
+<!--              <b style="cursor: pointer;">eps：</b>-->
+<!--            </el-tooltip>-->
+             <b>eps&nbsp;&nbsp;(IMD Threshold)：</b>
          </span>
            <el-autocomplete class="inline-input" v-model="eps" :fetch-suggestions="querySearchRG" placeholder="请输入内容" :trigger-on-focus="false" style="width: 70px;margin-right: 20px"></el-autocomplete>
            <span style="color: black;">
-           <b>User nickname：</b>
+           <b>Nickname：</b>
          </span>
-           <el-input class="inline-input" v-model="nickname"  placeholder="Not required"  style="width: 150px;margin-right:20px"></el-input>
+           <el-input class="inline-input" v-model="nickname"  placeholder="Not required"  style="width: 130px;margin-right:20px"></el-input>
          </div>
 
 <!--         参考格式指引-->
@@ -307,8 +308,8 @@ export default {
             if (!xRanges[key]) {
               xRanges[key] = { min: point.x, max: point.x };
             } else {
-              if (point.x < xRanges[key].min) xRanges[key].min = point.x;
-              if (point.x > xRanges[key].max) xRanges[key].max = point.x;
+              if (point.x <= xRanges[key].min) xRanges[key].min = point.x;
+              if (point.x >= xRanges[key].max) xRanges[key].max = point.x;
             }
           });
           cluster.forEach(point => {
@@ -417,7 +418,7 @@ export default {
             splitLine: {
               show: false
             },
-            min: xMin,  // 添加最小值
+            min: xMin-1000,  // 添加最小值
             max: xMax,   // 添加最大值
           }
         ],
@@ -442,87 +443,66 @@ export default {
         ],
         series: this.generateSeriesElements()
       };
-
+      // 调试：打印完整的 option 数据
+      console.log("ECharts option before rendering:", option);
       option && this.myChart.setOption(option);
     },
     generateSeriesElements() {
       const series = [];
-      let totalClusters =0;
-       totalClusters = this.clusterData.length;
-      // 定义缩放比例因子，用于缩小 x 坐标
-      const scaleFactor = 0.1; // 比例因子为 0.1，表示 x 坐标缩小为原来的十分之一
+      let totalClusters = this.clusterData.length; // 获取总的簇数量
+
+      console.log("Total clusters:", totalClusters); // 打印总的簇数量
 
       for (let i = 0; i < totalClusters; i++) {
-        let cluster = '';
-        if(this.clusterData[i].length === 0) continue;
-        cluster = this.clusterData[i];
+        if (this.clusterData[i].length === 0) continue; // 如果当前簇没有数据，则跳过
+        let cluster = this.clusterData[i];
         const data = [];
 
-        let borderWidth = 0.5;
-        if(i === totalClusters -1 ){
-          borderWidth = 0;
-          for (let j = 0; j < cluster.length; j++) {
-            const point = cluster[j];
-            // 对 x 坐标进行缩放
-            // const scaledX = point.x * scaleFactor;
-            data.push({
-              value: [point.x,point.y],
-              name:point.hugo_Symbol,
-              Cluster: '',// 添加 Cluster 列并设置为空字符串
-              // 为系列设置颜色
-              itemStyle: {
-                color: "rgba(108,105,105,0.35)"
-              }
-            });
-          }
-        }else{
-          for (let j = 0; j < cluster.length; j++) {
-            const point = cluster[j];
-            // 对 x 坐标进行缩放
-            // const scaledX = point.x * scaleFactor;
-            data.push({
-              value: [point.x,point.y,point.y2,point.wtAlle,point.mutAlle,point.strand,point.mutDescription,point.context],
-              name:point.hugo_Symbol,
-              Cluster: this.clusterData[i][0].cluster, // 添加 Cluster 列并设置为空字符串
-              // 为系列设置颜色
-              itemStyle: {
-                // color : this.randomColor() // 如果是最后一个簇，则使用固定颜色，否则生成随机颜色
-              }
-            });
-          }
+        for (let j = 0; j < cluster.length; j++) {
+          const point = cluster[j];
+          // 组装每个点的数据
+          data.push({
+            value: [point.x, point.y, point.y2, point.wtAlle, point.mutAlle, point.strand, point.mutDescription, point.context],
+            name: point.hugo_Symbol,
+            Cluster: point.cluster // 这里应该添加Cluster字段以便于理解每个点属于哪个簇
+          });
         }
 
+         // console.log(`Data for cluster ${i}:`, data); // 打印每个簇的数据
+
+        // 创建系列数据
         const seriesElement = {
           type: 'scatter',
           data: data,
+          z: 10, // 提升点的显示优先级
           markArea: {
             silent: true,
             itemStyle: {
-              borderWidth: borderWidth,
+              borderWidth: 0.5,
               borderType: 'dashed',
               color: 'transparent',
             },
             data: [
-              [
-                {
-                  name: data[0].Cluster,
-                  xAxis: 'min',
-                  yAxis: 'min'
-                },
-                {
-                  xAxis: 'max',
-                  yAxis: 'max'
-                }
-              ]
+              [{
+                name: data[0] ? data[0].Cluster : 'No Cluster',
+                xAxis: 'min',
+                yAxis: 'min'
+              }, {
+                xAxis: 'max',
+                yAxis: 'max'
+              }]
             ]
           },
         };
 
+
         series.push(seriesElement);
       }
 
-      return series;
+      console.log("Final series data for chart:", series); // 打印最终用于图表的系列数据
+      return series; // 返回所有系列数据以用于绘图
     },
+
     // 生成随机颜色字符串的函数
   randomColor() {
   // 生成随机的 R、G、B 分量
