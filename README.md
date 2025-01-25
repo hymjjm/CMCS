@@ -8,7 +8,7 @@ Cluster Mutation Classification System
 ## Required Software
 
 1. **Java**
-   - Required to run the backend code. Recommended version: `JDK 17`.
+   - Required to run the backend code. Recommended version: `JDK 8`.
    - Download link: [Oracle JDK Download](https://www.oracle.com/java/technologies/javase-downloads.html)  
    - Or [OpenJDK Download](https://openjdk.org/)
 
